@@ -1,0 +1,11 @@
+# for non-netbeans projects
+_test/
+test/
+
+# for vim temp files
+*~
+*.swp
+*.swo
+
+# OSX
+.DS_Store
