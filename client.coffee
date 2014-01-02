@@ -1,3 +1,43 @@
+class HangRabbit
+	constructor: ->
+		# properties
+		@ENTER_KEYCODE = 13
+
+		# events
+		$(".js-phrase-input").keyup @handleTextInputEnter
+
+		@refreshLetterChoices()
+
+	refreshLetterChoices: ->
+		$container = $('.js-letter-choices')
+		$container.empty()
+		for x in [65..90]
+			c = String.fromCharCode x
+			$container.append "<span class=\"letter-choice\">#{c}</span>"
+
+	handleTextInputEnter: ($ev) =>
+		if $ev.keyCode == @ENTER_KEYCODE
+			inputText = $(".js-phrase-input").val()
+			@validateInput inputText
+
+	validateInput: (phrase) ->
+		phrases = (li.innerHTML for li in $("li.js-phrase")) or []
+		if phrase in phrases
+			@showValidationMessage "You already added that!"
+		else
+			@addPhrase phrase
+			@clearPhraseInput()
+	
+	showValidationMessage: (message) ->
+		$(".js-validation-message").html message
+
+	addPhrase: (phrase) ->
+		console.log "Adding phrase: '#{phrase}'"
+		html = "<li class=\"js-phrase\">#{phrase}</li>"
+		$(".js-phrase-list").append html
+
+	clearPhraseInput: ->
+		$('.js-phrase-input').val ""
+
 $(document).ready ->
-	$('h1').click ->
-		alert 'woah'
+	hangRabbit = new HangRabbit
