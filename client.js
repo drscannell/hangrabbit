@@ -8,16 +8,32 @@
     function HangRabbit() {
       this.handleTextInputEnter = __bind(this.handleTextInputEnter, this);
       this.handleLetterChoice = __bind(this.handleLetterChoice, this);
+      this.handlePhraseSubmission = __bind(this.handlePhraseSubmission, this);
       this.ENTER_KEYCODE = 13;
       this.game = null;
       $(".js-phrase-input").keyup(this.handleTextInputEnter);
+      $(".js-single-device-phrase-input").keyup(this.handlePhraseSubmission);
       $(".js-letter-choices").click(this.handleLetterChoice);
-      this.loadNewGame("Gimme a break");
-      this.refreshLetterChoices();
     }
+
+    HangRabbit.prototype.handlePhraseSubmission = function($ev) {
+      var phrase;
+      if ($ev.keyCode === this.ENTER_KEYCODE) {
+        phrase = $(".js-single-device-phrase-input").val();
+        if (this.validatePhrase(phrase)) {
+          return this.loadNewGame(phrase);
+        }
+      }
+    };
+
+    HangRabbit.prototype.validatePhrase = function(phrase) {
+      return true;
+    };
 
     HangRabbit.prototype.loadNewGame = function(phrase) {
       var $clueArea, letter, _i, _len, _results;
+      $(".js-phrase-input-form").hide();
+      this.refreshLetterChoices();
       phrase = phrase.toLowerCase();
       this.game = new Game(phrase);
       $clueArea = $(".js-letter-underlines");
@@ -35,7 +51,7 @@
     };
 
     HangRabbit.prototype.handleLetterChoice = function($ev) {
-      var guess, isValidGuess, location, locations, noun, _i, _len;
+      var guess, isValidGuess, location, locations, noun, tone, _i, _len;
       isValidGuess = true;
       if (this.game.isLost()) {
         isValidGuess = false;
@@ -58,12 +74,15 @@
           $(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess);
         }
         if (this.game.isLost()) {
-          return $(".js-message").html("You ran out of guesses!");
+          $(".js-message").html("You ran out of guesses!");
+          return $(".js-phrase-input-form").show();
         } else if (this.game.isWon()) {
-          return $(".js-message").html("You got it!");
+          $(".js-message").html("You got it!");
+          return $(".js-phrase-input-form").show();
         } else {
+          tone = locations.length > 0 ? "Nice!" : "Oops!";
           noun = this.game.getAttemptsLeft() > 1 ? "guesses" : "guess";
-          return $(".js-message").html("You have " + (this.game.getAttemptsLeft()) + " " + noun + " left...");
+          return $(".js-message").html("" + tone + " You have " + (this.game.getAttemptsLeft()) + " " + noun + " left...");
         }
       }
     };

@@ -6,13 +6,20 @@ class HangRabbit
 
 		# events
 		$(".js-phrase-input").keyup @handleTextInputEnter
+		$(".js-single-device-phrase-input").keyup @handlePhraseSubmission
 		$(".js-letter-choices").click @handleLetterChoice
+	
+	handlePhraseSubmission: ($ev) =>
+		if $ev.keyCode == @ENTER_KEYCODE
+			phrase = $(".js-single-device-phrase-input").val()
+			if @validatePhrase phrase then @loadNewGame phrase
 
-		@loadNewGame "Gimme a break"
-
-		@refreshLetterChoices()
+	validatePhrase: (phrase) ->
+		return true
 
 	loadNewGame: (phrase) ->
+		$(".js-phrase-input-form").hide()
+		@refreshLetterChoices()
 		phrase = phrase.toLowerCase()
 		@game = new Game phrase
 		$clueArea = $(".js-letter-underlines")
@@ -38,11 +45,14 @@ class HangRabbit
 				$(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess)
 			if @game.isLost()
 				$(".js-message").html "You ran out of guesses!"
+				$(".js-phrase-input-form").show()
 			else if @game.isWon()
 				$(".js-message").html "You got it!"
+				$(".js-phrase-input-form").show()
 			else
+				tone = if locations.length > 0 then "Nice!" else "Oops!"
 				noun = if @game.getAttemptsLeft() > 1 then "guesses" else "guess"
-				$(".js-message").html "You have #{@game.getAttemptsLeft()} #{noun} left..."
+				$(".js-message").html "#{tone} You have #{@game.getAttemptsLeft()} #{noun} left..."
 
 	refreshLetterChoices: ->
 		$container = $('.js-letter-choices')
