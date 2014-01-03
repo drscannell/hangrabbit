@@ -42,18 +42,30 @@ input.text-input {font-size:1em;}
 span.underscore:before {
 	margin:1px;
 	content:"_";
+	font-size:1.2em;
+}
+
+span.guessed {
+	margin:1px;
+	font-size:1.2em;
 }
 
 span.space:before {
 	margin:1px;
 	content:" ";
+	font-size:1.2em;
 }
 
 span.letter-choice {
 	display:inline-block;
+	font-family:monospace;
 	padding:5px;
-	font-size:1.2em;
+	font-size:1.8em;
 	margin:5px;
 	background:rgb(200,200,220);
 	border-radius:5px;
+}
+span.disabled {
+	background:rgb(230,230,230);
+	color:rgb(200,200,200);
 }

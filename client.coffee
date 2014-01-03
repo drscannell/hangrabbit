@@ -2,6 +2,7 @@ class HangRabbit
 	constructor: ->
 		# properties
 		@ENTER_KEYCODE = 13
+		@game = null
 
 		# events
 		$(".js-phrase-input").keyup @handleTextInputEnter
@@ -13,17 +14,32 @@ class HangRabbit
 
 	loadNewGame: (phrase) ->
 		phrase = phrase.toLowerCase()
-		console.log "Loading game for '#{phrase}'"
-		$clueArea = $("js-letter-underlines")
+		@game = new Game phrase
+		$(".js-attempts-left").html @game.getAttemptsLeft()
+		$clueArea = $(".js-letter-underlines")
+		$clueArea.empty()
 		for letter in phrase
 			if letter == " "
-				console.log "space"
+				$clueArea.append "<span class=\"char space\" />"
 			else
-				console.log letter
+				$clueArea.append "<span class=\"char underscore\" />"
 	
 	handleLetterChoice: ($ev) =>
-		if $($ev.target).hasClass "letter-choice"
-			console.log $ev.target.innerHTML
+		isValidGuess = true
+		if @game.isLost() then isValidGuess = false
+		if @game.isWon() then isValidGuess = false
+		if not $($ev.target).hasClass "letter-choice" then isValidGuess = false
+		if $($ev.target).hasClass "disabled" then isValidGuess = false
+		
+		if isValidGuess
+			$($ev.target).addClass "disabled"
+			guess = $ev.target.innerHTML
+			locations = @game.guessLetter guess
+			for location in locations
+				$(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess)
+			$(".js-attempts-left").html @game.getAttemptsLeft()
+			if @game.isLost() then console.log "loser"
+			if @game.isWon() then console.log "winner"
 
 	refreshLetterChoices: ->
 		$container = $('.js-letter-choices')
@@ -55,6 +71,34 @@ class HangRabbit
 
 	clearPhraseInput: ->
 		$('.js-phrase-input').val ""
+
+
+
+class Game
+	constructor: (@phrase, @maxAttempts = 5) ->
+		@phrase = @phrase.toLowerCase()
+		@rightGuesses = []
+		@wrongGuesses = []
+		@uniqueLetters = []
+		for letter in @phrase
+			@uniqueLetters.push letter if (letter != " ") and (letter not in @uniqueLetters)
+	getPhrase: -> @phrase
+	isWon: -> @rightGuesses.length == @uniqueLetters.length
+	isLost: -> @wrongGuesses.length >= @maxAttempts
+	getAttemptsLeft: -> @maxAttempts - @wrongGuesses.length
+	guessLetter: (guess) ->
+		guess = guess.toLowerCase()
+		locations = []
+		for letter,i in @phrase
+			locations.push i if letter == guess
+		if locations.length > 0
+			@rightGuesses.push guess
+		else
+			@wrongGuesses.push guess
+		return locations
+
+
+
 
 $(document).ready ->
 	hangRabbit = new HangRabbit
