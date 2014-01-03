@@ -7,10 +7,36 @@
   HangRabbit = (function() {
     function HangRabbit() {
       this.handleTextInputEnter = __bind(this.handleTextInputEnter, this);
+      this.handleLetterChoice = __bind(this.handleLetterChoice, this);
       this.ENTER_KEYCODE = 13;
       $(".js-phrase-input").keyup(this.handleTextInputEnter);
+      $(".js-letter-choices").click(this.handleLetterChoice);
+      this.loadNewGame("Gimme a break");
       this.refreshLetterChoices();
     }
+
+    HangRabbit.prototype.loadNewGame = function(phrase) {
+      var $clueArea, letter, _i, _len, _results;
+      phrase = phrase.toLowerCase();
+      console.log("Loading game for '" + phrase + "'");
+      $clueArea = $("js-letter-underlines");
+      _results = [];
+      for (_i = 0, _len = phrase.length; _i < _len; _i++) {
+        letter = phrase[_i];
+        if (letter === " ") {
+          _results.push(console.log("space"));
+        } else {
+          _results.push(console.log(letter));
+        }
+      }
+      return _results;
+    };
+
+    HangRabbit.prototype.handleLetterChoice = function($ev) {
+      if ($($ev.target).hasClass("letter-choice")) {
+        return console.log($ev.target.innerHTML);
+      }
+    };
 
     HangRabbit.prototype.refreshLetterChoices = function() {
       var $container, c, x, _i, _results;

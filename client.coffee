@@ -5,8 +5,25 @@ class HangRabbit
 
 		# events
 		$(".js-phrase-input").keyup @handleTextInputEnter
+		$(".js-letter-choices").click @handleLetterChoice
+
+		@loadNewGame "Gimme a break"
 
 		@refreshLetterChoices()
+
+	loadNewGame: (phrase) ->
+		phrase = phrase.toLowerCase()
+		console.log "Loading game for '#{phrase}'"
+		$clueArea = $("js-letter-underlines")
+		for letter in phrase
+			if letter == " "
+				console.log "space"
+			else
+				console.log letter
+	
+	handleLetterChoice: ($ev) =>
+		if $($ev.target).hasClass "letter-choice"
+			console.log $ev.target.innerHTML
 
 	refreshLetterChoices: ->
 		$container = $('.js-letter-choices')
