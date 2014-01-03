@@ -1,24 +1,13 @@
 /* 
  * reset 
  */
-body {
-	margin:0;
-	padding:0;
-	font-family:'Source Sans Pro', sans-serif;
-}
+body {margin:0;padding:0;}
 h1 { font-size:2.00em;font-weight:normal;margin:0; }
 h2 { font-size:1.75em;font-weight:normal;margin:0; }
 h3 { font-size:1.50em;font-weight:normal;margin:0; }
 h4 { font-size:1.25em;font-weight:normal;margin:0; }
 h5 { font-size:1.00em;font-weight:bold;margin:0;  }
 h6 { font-size:1.00em;font-weight:bold;margin:0; }
-pre { 
-	margin:1em;
-	border:1px solid #CCC; 
-	padding:10px;
-	overflow:auto;
-	-webkit-overflow-scrolling:touch; 
-}
 div {margin:0;border:0;outline:0;padding:0;}
 p {margin:0 0 0.5em 0;border:0;outline:0;padding:0;}
 blockquote {margin:1em 1.5em 1em 1.5em;border:0;outline:0;padding:0;}
@@ -29,4 +18,62 @@ a {text-decoration:none;word-wrap:break-word;}
 /* app styles */
 
 body {font-family:sans-serif;}
+h1.app-heading {
+	font-size:1.2em;
+	color:white;
+	background:rgb(50,50,70);
+	padding:5px;
+	text-align:center;
+}
+h2.subheading {
+	font-size:1em;
+	font-weight:bold;
+	text-align:center;
+	margin-bottom:20px;
+}
+section.main-section {
+	border: 1px solid;
+	border-radius: 5px;
+	padding:5px;
+	margin:5px;
+}
+.message {
+	margin-bottom:10px;
+}
+.warning {color:rgb(150,50,50);}
+.letter-underlines {
+	margin-bottom:10px;
+	text-align:center;
+	font-family:monospace;
+	font-size:1.5em;
+}
 
+input.text-input {font-size:1em;}
+
+span.underscore:before {
+	margin:1px;
+	content:"_";
+}
+
+span.guessed {
+	margin:1px;
+}
+
+span.space:before {
+	margin:1px;
+	content:" ";
+}
+
+span.letter-choice {
+	display:inline-block;
+	font-family:monospace;
+	padding:5px;
+	font-size:1.8em;
+	margin:5px;
+	background:rgb(200,200,220);
+	border-radius:5px;
+}
+span.disabled {
+	background:rgb(230,230,230);
+	color:rgb(200,200,200);
+}

@@ -10,6 +10,32 @@
 <body>
 
 <h1 class="app-heading">hangrabbit</h1>
+
+<section class="main-section current-game">
+	<h2 class="subheading">Current Game</h2>
+	<p class="message js-message">&#x00A0;</p>
+	<div class="letter-underlines js-letter-underlines"></div>
+	<div class="js-letter-choices"></div>
+</section>
+<section class="main-section js-phrase-input-form">
+	<h2 class="subheading">Enter a Phrase For Your Opponent</h2>
+	<div class="text-input">
+		<span class="text-input-label">Enter phrase:</span>
+		<input autofocus type="text" size="30" class="text-input js-single-device-phrase-input" />
+		<span class="warning js-validation-message"></span>
+	</div>
+</section>
+
+<section style="display:none;" class="main-section phrase-list">
+	<h2 class="subheading">Phrases For Your Opponent</h2>
+	<div class="text-input">
+		<span class="text-input-label">Enter Phrase:</span>
+		<input autofocus type="text" size="30" class="text-input js-phrase-input" />
+		<span class="warning js-validation-message"></span>
+	</div>
+	<ol class="phrase-list js-phrase-list"></ol>
+</section>
+
 <script src="libraries/jquery-2.0.3.js"></script>
 <script src="client.js"></script>
 </body>
