@@ -15,7 +15,6 @@ class HangRabbit
 	loadNewGame: (phrase) ->
 		phrase = phrase.toLowerCase()
 		@game = new Game phrase
-		$(".js-attempts-left").html @game.getAttemptsLeft()
 		$clueArea = $(".js-letter-underlines")
 		$clueArea.empty()
 		for letter in phrase
@@ -37,9 +36,13 @@ class HangRabbit
 			locations = @game.guessLetter guess
 			for location in locations
 				$(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess)
-			$(".js-attempts-left").html @game.getAttemptsLeft()
-			if @game.isLost() then console.log "loser"
-			if @game.isWon() then console.log "winner"
+			if @game.isLost()
+				$(".js-message").html "You ran out of guesses!"
+			else if @game.isWon()
+				$(".js-message").html "You got it!"
+			else
+				noun = if @game.getAttemptsLeft() > 1 then "guesses" else "guess"
+				$(".js-message").html "You have #{@game.getAttemptsLeft()} #{noun} left..."
 
 	refreshLetterChoices: ->
 		$container = $('.js-letter-choices')

@@ -20,7 +20,6 @@
       var $clueArea, letter, _i, _len, _results;
       phrase = phrase.toLowerCase();
       this.game = new Game(phrase);
-      $(".js-attempts-left").html(this.game.getAttemptsLeft());
       $clueArea = $(".js-letter-underlines");
       $clueArea.empty();
       _results = [];
@@ -36,7 +35,7 @@
     };
 
     HangRabbit.prototype.handleLetterChoice = function($ev) {
-      var guess, isValidGuess, location, locations, _i, _len;
+      var guess, isValidGuess, location, locations, noun, _i, _len;
       isValidGuess = true;
       if (this.game.isLost()) {
         isValidGuess = false;
@@ -58,12 +57,13 @@
           location = locations[_i];
           $(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess);
         }
-        $(".js-attempts-left").html(this.game.getAttemptsLeft());
         if (this.game.isLost()) {
-          console.log("loser");
-        }
-        if (this.game.isWon()) {
-          return console.log("winner");
+          return $(".js-message").html("You ran out of guesses!");
+        } else if (this.game.isWon()) {
+          return $(".js-message").html("You got it!");
+        } else {
+          noun = this.game.getAttemptsLeft() > 1 ? "guesses" : "guess";
+          return $(".js-message").html("You have " + (this.game.getAttemptsLeft()) + " " + noun + " left...");
         }
       }
     };
@@ -174,10 +174,8 @@
       }
       if (locations.length > 0) {
         this.rightGuesses.push(guess);
-        console.log("right");
       } else {
         this.wrongGuesses.push(guess);
-        console.log("wrong");
       }
       return locations;
     };

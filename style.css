@@ -28,6 +28,8 @@ h1.app-heading {
 h2.subheading {
 	font-size:1em;
 	font-weight:bold;
+	text-align:center;
+	margin-bottom:20px;
 }
 section.main-section {
 	border: 1px solid;
@@ -35,25 +37,31 @@ section.main-section {
 	padding:5px;
 	margin:5px;
 }
+.message {
+	margin-bottom:10px;
+}
 .warning {color:rgb(150,50,50);}
+.letter-underlines {
+	margin-bottom:10px;
+	text-align:center;
+	font-family:monospace;
+	font-size:1.5em;
+}
 
 input.text-input {font-size:1em;}
 
 span.underscore:before {
 	margin:1px;
 	content:"_";
-	font-size:1.2em;
 }
 
 span.guessed {
 	margin:1px;
-	font-size:1.2em;
 }
 
 span.space:before {
 	margin:1px;
 	content:" ";
-	font-size:1.2em;
 }
 
 span.letter-choice {
