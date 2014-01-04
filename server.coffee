@@ -17,6 +17,6 @@ app.get '/', (req, res) ->
 app.use express.static __dirname
 
 # backstop logger
-app.all "*" (req, res, next) ->
-	console.log "  request ignored"
-	return null
+#app.all "*", (req, res, next) ->
+#	console.log "  request ignored"
+#	return null
