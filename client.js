@@ -16,12 +16,18 @@
       $(".js-letter-choices").click(this.handleLetterChoice);
     }
 
+    HangRabbit.prototype.hideKeyboard = function() {
+      document.activeElement.blur();
+      return $("input").blur();
+    };
+
     HangRabbit.prototype.handlePhraseSubmission = function($ev) {
       var phrase;
       if ($ev.keyCode === this.ENTER_KEYCODE) {
         phrase = $(".js-single-device-phrase-input").val();
         if (this.validatePhrase(phrase)) {
-          return this.loadNewGame(phrase);
+          this.loadNewGame(phrase);
+          return this.hideKeyboard;
         }
       }
     };

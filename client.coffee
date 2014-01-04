@@ -8,11 +8,17 @@ class HangRabbit
 		$(".js-phrase-input").keyup @handleTextInputEnter
 		$(".js-single-device-phrase-input").keyup @handlePhraseSubmission
 		$(".js-letter-choices").click @handleLetterChoice
+
+	hideKeyboard: ->
+		document.activeElement.blur()
+		$("input").blur()
 	
 	handlePhraseSubmission: ($ev) =>
 		if $ev.keyCode == @ENTER_KEYCODE
 			phrase = $(".js-single-device-phrase-input").val()
-			if @validatePhrase phrase then @loadNewGame phrase
+			if @validatePhrase phrase
+				@loadNewGame phrase
+				@hideKeyboard
 
 	validatePhrase: (phrase) ->
 		return true
