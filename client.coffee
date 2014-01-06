@@ -29,6 +29,7 @@ class HangRabbit
 		phrase = phrase.toLowerCase()
 		@game = new Game phrase
 		$(".js-message").html "Select a letter. You have #{@game.getAttemptsLeft()} guesses left."
+		$(".js-phrase-input").blur()
 		$clueArea = $(".js-letter-underlines")
 		$clueArea.empty()
 		for letter in phrase
