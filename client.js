@@ -42,6 +42,7 @@
       this.refreshLetterChoices();
       phrase = phrase.toLowerCase();
       this.game = new Game(phrase);
+      $(".js-message").html("Select a letter. You have " + (this.game.getAttemptsLeft()) + " guesses left.");
       $clueArea = $(".js-letter-underlines");
       $clueArea.empty();
       _results = [];
