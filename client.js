@@ -80,7 +80,7 @@
           $(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess);
         }
         if (this.game.isLost()) {
-          $(".js-message").html("You ran out of guesses!");
+          $(".js-message").html("You ran out of guesses! The phrase was '" + (this.game.getPhrase()) + "'");
           return $(".js-phrase-input-form").show();
         } else if (this.game.isWon()) {
           $(".js-message").html("You got it!");

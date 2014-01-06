@@ -50,7 +50,7 @@ class HangRabbit
 			for location in locations
 				$(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess)
 			if @game.isLost()
-				$(".js-message").html "You ran out of guesses!"
+				$(".js-message").html "You ran out of guesses! The phrase was \"#{@game.getPhrase()}\"."
 				$(".js-phrase-input-form").show()
 			else if @game.isWon()
 				$(".js-message").html "You got it!"
