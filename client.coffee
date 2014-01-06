@@ -51,17 +51,21 @@ class HangRabbit
 				$(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess)
 			if @game.isLost()
 				$(".js-message").html "You ran out of guesses! The phrase was \"#{@game.getPhrase()}\"."
-				$(".js-phrase-input-form").show()
+				@showPhraseInputForm()
 			else if @game.isWon()
 				$(".js-message").html "You got it!"
-				$(".js-phrase-input-form").show()
+				@showPhraseInputForm()
 			else
 				tone = if locations.length > 0 then "Nice!" else "Oops!"
 				noun = if @game.getAttemptsLeft() > 1 then "guesses" else "guess"
 				$(".js-message").html "#{tone} You have #{@game.getAttemptsLeft()} #{noun} left..."
 
+	showPhraseInputForm: ->
+		$(".js-phrase-input-form").show()
+		$(".js-single-device-phrase-input").val ""
+
 	refreshLetterChoices: ->
-		$container = $('.js-letter-choices')
+		$container = $(".js-letter-choices")
 		$container.empty()
 		for x in [65..90]
 			c = String.fromCharCode x
