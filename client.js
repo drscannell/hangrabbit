@@ -42,6 +42,8 @@
       this.refreshLetterChoices();
       phrase = phrase.toLowerCase();
       this.game = new Game(phrase);
+      $(".js-message").html("Select a letter. You have " + (this.game.getAttemptsLeft()) + " guesses left.");
+      $(".js-phrase-input").blur();
       $clueArea = $(".js-letter-underlines");
       $clueArea.empty();
       _results = [];
@@ -80,11 +82,11 @@
           $(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess);
         }
         if (this.game.isLost()) {
-          $(".js-message").html("You ran out of guesses!");
-          return $(".js-phrase-input-form").show();
+          $(".js-message").html("You ran out of guesses! The phrase was \"" + (this.game.getPhrase()) + "\".");
+          return this.showPhraseInputForm();
         } else if (this.game.isWon()) {
           $(".js-message").html("You got it!");
-          return $(".js-phrase-input-form").show();
+          return this.showPhraseInputForm();
         } else {
           tone = locations.length > 0 ? "Nice!" : "Oops!";
           noun = this.game.getAttemptsLeft() > 1 ? "guesses" : "guess";
@@ -93,9 +95,14 @@
       }
     };
 
+    HangRabbit.prototype.showPhraseInputForm = function() {
+      $(".js-phrase-input-form").show();
+      return $(".js-single-device-phrase-input").val("");
+    };
+
     HangRabbit.prototype.refreshLetterChoices = function() {
       var $container, c, x, _i, _results;
-      $container = $('.js-letter-choices');
+      $container = $(".js-letter-choices");
       $container.empty();
       _results = [];
       for (x = _i = 65; _i <= 90; x = ++_i) {
