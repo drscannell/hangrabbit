@@ -69,12 +69,11 @@ div.letter-choices {
 span.letter-choice {
 	display:inline-block;
 	font-family:monospace;
-	padding:5px;
 	font-size:2.5em;
 	width:20%;
-	margin:5px;
+	margin:1px;
 	background:rgb(200,200,220);
-	border-radius:5px;
+	border-radius:2px;
 }
 span.disabled {
 	background:rgb(230,230,230);
