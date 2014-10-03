@@ -1,7 +1,3 @@
-# for non-netbeans projects
-_test/
-test/
-
 # for vim temp files
 *~
 *.swp
@@ -9,3 +5,9 @@ test/
 
 # OSX
 .DS_Store
+
+# node
+node_modules
+
+# Python
+*.pyc
