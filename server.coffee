@@ -1,6 +1,12 @@
 express = require "express"
 app = express()
-app.listen process.env.PORT || 8000
+port = 8000
+if process.env.NODE_ENV == 'production'
+	port = 80
+else
+	port = process.env.PORT || port
+console.log "listening on port #{port}"
+app.listen port
 app.use express.bodyParser()
 
 # primitive logger
