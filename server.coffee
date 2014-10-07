@@ -1,12 +1,10 @@
 express = require "express"
 app = express()
-port = 8000
-if process.env.NODE_ENV == 'production'
-	port = 80
-else
-	port = process.env.PORT || port
-console.log "listening on port #{port}"
-app.listen port
+port = 3001
+app.listen port, ->
+	console.log "Listening on port #{port}"
+	return null
+
 app.use express.bodyParser()
 
 # primitive logger
@@ -16,7 +14,7 @@ app.use (req,res,next) ->
 	return null
 
 app.get '/', (req, res) ->
-	res.sendfile "index.html"
+	res.sendfile "#{__dirname}/index.html"
 	return null
 
 # static file serving

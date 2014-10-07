@@ -6,17 +6,12 @@
 
   app = express();
 
-  port = 8000;
+  port = 3001;
 
-  if (process.env.NODE_ENV === 'production') {
-    port = 80;
-  } else {
-    port = process.env.PORT || port;
-  }
-
-  console.log("listening on port " + port);
-
-  app.listen(port);
+  app.listen(port, function() {
+    console.log("Listening on port " + port);
+    return null;
+  });
 
   app.use(express.bodyParser());
 
@@ -27,7 +22,7 @@
   });
 
   app.get('/', function(req, res) {
-    res.sendfile("index.html");
+    res.sendfile("" + __dirname + "/index.html");
     return null;
   });
 
