@@ -79,3 +79,18 @@ span.disabled {
 	background:rgb(230,230,230);
 	color:rgb(200,200,200);
 }
+
+.graphic-hangman {
+	text-align:center;
+}
+.hangman {
+	height:150px;
+}
+
+@media screen and (min-width:500px) {
+	.hangman {
+		height:auto;
+		max-width:90%;
+		max-height:30%;
+	}
+}

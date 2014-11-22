@@ -9,6 +9,19 @@ class HangRabbit
 		$(".js-single-device-phrase-input").keyup @handlePhraseSubmission
 		$(".js-letter-choices").click @handleLetterChoice
 
+		# svg
+		svgObject = document.getElementById "svg"
+		svgDoc = svgObject.contentDocument
+		@face = svgDoc.getElementById "face"
+		@bodyparts = [
+			svgDoc.getElementById "head"
+			svgDoc.getElementById "torso"
+			svgDoc.getElementById "left_arm"
+			svgDoc.getElementById "right_arm"
+			svgDoc.getElementById "right_leg"
+			svgDoc.getElementById "left_leg"
+		]
+
 	hideKeyboard: ->
 		document.activeElement.blur()
 		$("input").blur()
@@ -37,6 +50,9 @@ class HangRabbit
 				$clueArea.append "<span class=\"char space\" />"
 			else
 				$clueArea.append "<span class=\"char underscore\" />"
+		for bodypart in @bodyparts
+			bodypart.setAttribute "class", "hidden"
+		@face.setAttribute "class", "hidden"
 	
 	handleLetterChoice: ($ev) =>
 		isValidGuess = true
@@ -49,9 +65,13 @@ class HangRabbit
 			$($ev.target).addClass "disabled"
 			guess = $ev.target.innerHTML
 			locations = @game.guessLetter guess
+			if locations.length == 0
+				n = @game.maxAttempts - @game.getAttemptsLeft() - 1
+				@bodyparts[n].setAttribute "class", "reveal"
 			for location in locations
 				$(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess)
 			if @game.isLost()
+				@face.setAttribute "class", "reveal"
 				$(".js-message").html "You ran out of guesses! The phrase was \"#{@game.getPhrase()}\"."
 				@showPhraseInputForm()
 			else if @game.isWon()
@@ -100,7 +120,7 @@ class HangRabbit
 
 
 class Game
-	constructor: (@phrase, @maxAttempts = 5) ->
+	constructor: (@phrase, @maxAttempts = 6) ->
 		@phrase = @phrase.toLowerCase()
 		@rightGuesses = []
 		@wrongGuesses = []
@@ -124,6 +144,6 @@ class Game
 
 
 
-
-$(document).ready ->
+window.addEventListener 'load', ()->
 	hangRabbit = new HangRabbit
+, false
