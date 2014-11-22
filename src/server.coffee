@@ -1,4 +1,5 @@
 express = require "express"
+path = require "path"
 app = express()
 port = 3001
 app.listen port, ->
@@ -9,18 +10,20 @@ app.use express.bodyParser()
 
 # primitive logger
 app.use (req,res,next) ->
-	console.log "\n #{req.method} #{req.url}"
+	console.log "#{req.method} #{req.url}"
 	next()
 	return null
 
+staticfolder = path.resolve __dirname, "../static"
+
 app.get '/', (req, res) ->
-	res.sendfile "#{__dirname}/index.html"
+	res.sendfile "#{staticfolder}/index.html"
+	return null
+
+app.get '/js/client.js', (req, res) ->
+	res.sendfile "#{__dirname}/client.js"
 	return null
 
 # static file serving
-app.use express.static __dirname
+app.use express.static staticfolder
 
-# backstop logger
-#app.all "*", (req, res, next) ->
-#	console.log "  request ignored"
-#	return null
