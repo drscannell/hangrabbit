@@ -64,9 +64,11 @@ span.space:before {
 	content:" ";
 }
 div.letter-choices {
+	-webkit-tap-highlight-color:transparent;
 	text-align:center;
 }
 span.letter-choice {
+	-webkit-tap-highlight-color:transparent;
 	display:inline-block;
 	font-family:monospace;
 	font-size:2.5em;
