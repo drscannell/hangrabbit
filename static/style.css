@@ -42,12 +42,12 @@ section.main-section {
 }
 .warning {color:rgb(150,50,50);}
 .letter-underlines {
-	clear:both;
 	margin-bottom:10px;
 	text-align:center;
 	font-family:monospace;
 	font-size:1.5em;
 }
+.clear {border:0;clear:both;}
 
 input.text-input {font-size:1em;}
 
@@ -71,10 +71,12 @@ span.guessed {
 	margin:1px;
 }
 
+/*
 span.space:before {
 	margin:1px;
 	content:" ";
 }
+	*/
 div.letter-choices {
 	-webkit-tap-highlight-color:transparent;
 	text-align:center;

@@ -5,7 +5,6 @@ class HangRabbit
 		@game = null
 
 		tap = if 'ontouchstart' in window then 'touchstart' else 'click'
-		console.log tap
 
 		# events
 		$(".js-phrase-input").on 'keypress',  @handleKeystroke
@@ -30,7 +29,6 @@ class HangRabbit
 		$(".js-phrase-input").blur()
 	
 	handleKeystroke: ($ev) =>
-		console.log "handleKeystroke #{$ev.keyCode}"
 		if $ev.keyCode == @ENTER_KEYCODE
 			@submitPhrase()
 
@@ -59,8 +57,8 @@ class HangRabbit
 		$clueArea = $(".js-letter-underlines")
 		$clueArea.empty()
 		for letter in phrase
-			if letter == " "
-				$clueArea.append "<span class=\"char space\" />"
+			if letter.match /[^a-z]/i
+				$clueArea.append "<span class=\"char space\" >#{letter}</span>"
 			else
 				$clueArea.append "<span class=\"char underscore\" />"
 		for bodypart in @bodyparts
@@ -140,10 +138,13 @@ class Game
 		@wrongGuesses = []
 		@uniqueLetters = []
 		for letter in @phrase
-			@uniqueLetters.push letter if (letter != " ") and (letter not in @uniqueLetters)
+			if letter.match(/[a-z]/i) and letter not in @uniqueLetters
+				@uniqueLetters.push letter
 	getPhrase: -> @phrase
-	isWon: -> @rightGuesses.length == @uniqueLetters.length
-	isLost: -> @wrongGuesses.length >= @maxAttempts
+	isWon: =>
+		@rightGuesses.length == @uniqueLetters.length
+	isLost: ->
+		@wrongGuesses.length >= @maxAttempts
 	getAttemptsLeft: -> @maxAttempts - @wrongGuesses.length
 	guessLetter: (guess) ->
 		guess = guess.toLowerCase()
