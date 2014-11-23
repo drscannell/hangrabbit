@@ -4,10 +4,13 @@ class HangRabbit
 		@ENTER_KEYCODE = 13
 		@game = null
 
+		tap = if 'ontouchstart' in window then 'touchstart' else 'click'
+		console.log tap
+
 		# events
-		$(".js-phrase-input").keyup @handleTextInputEnter
-		$(".js-single-device-phrase-input").keyup @handlePhraseSubmission
-		$(".js-letter-choices").click @handleLetterChoice
+		$(".js-phrase-input").on 'keypress',  @handleKeystroke
+		$(".js-letter-choices").on tap, @handleLetterChoice
+		$(".js-submit").on "click", @submitPhrase
 
 		# svg
 		svgObject = document.getElementById "svg"
@@ -24,17 +27,27 @@ class HangRabbit
 
 	hideKeyboard: ->
 		document.activeElement.blur()
-		$("input").blur()
+		$(".js-phrase-input").blur()
 	
-	handlePhraseSubmission: ($ev) =>
+	handleKeystroke: ($ev) =>
+		console.log "handleKeystroke #{$ev.keyCode}"
 		if $ev.keyCode == @ENTER_KEYCODE
-			phrase = $(".js-single-device-phrase-input").val()
-			if @validatePhrase phrase
+			@submitPhrase()
+
+	validatePhrase: (phrase, callback) ->
+		if phrase.length < 3
+			callback "At least 3 letters!"
+		else
+			callback null
+
+	submitPhrase: =>
+		phrase = $(".js-phrase-input").val()
+		@validatePhrase phrase, (err) =>
+			if err
+				$('.js-warning').html err
+			else
 				@loadNewGame phrase
 				@hideKeyboard
-
-	validatePhrase: (phrase) ->
-		return true
 
 	loadNewGame: (phrase) ->
 		$(".js-phrase-input-form").hide()
@@ -84,7 +97,8 @@ class HangRabbit
 
 	showPhraseInputForm: ->
 		$(".js-phrase-input-form").show()
-		$(".js-single-device-phrase-input").val ""
+		$(".js-phrase-input").val ""
+		$('.js-warning').html ""
 
 	refreshLetterChoices: ->
 		$container = $(".js-letter-choices")
