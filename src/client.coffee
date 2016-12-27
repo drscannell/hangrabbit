@@ -66,13 +66,13 @@ class HangRabbit
 		@face.setAttribute "class", "hidden"
 	
 	handleLetterChoice: ($ev) =>
-		isValidGuess = true
-		if @game.isLost() then isValidGuess = false
-		if @game.isWon() then isValidGuess = false
-		if not $($ev.target).hasClass "letter-choice" then isValidGuess = false
-		if $($ev.target).hasClass "disabled" then isValidGuess = false
+		shouldHandleLetterChoice = true
+		if @game.isLost() then shouldHandleLetterChoice = false
+		if @game.isWon() then shouldHandleLetterChoice = false
+		if not $($ev.target).hasClass "letter-choice" then shouldHandleLetterChoice = false
+		if $($ev.target).hasClass "disabled" then shouldHandleLetterChoice = false
 		
-		if isValidGuess
+		if shouldHandleLetterChoice
 			$($ev.target).addClass "disabled"
 			guess = $ev.target.innerHTML
 			locations = @game.guessLetter guess
