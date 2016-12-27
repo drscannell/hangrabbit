@@ -3,6 +3,45 @@ class HangRabbit
 		# properties
 		@ENTER_KEYCODE = 13
 		@game = null
+		@GOOD_GUESS_MESSAGES = [
+			'Nice!', 'Excellent!', 'Well done!'
+			'Yep.', 'Yup!', 'Yeah!'
+			'Smooth.', 'Yes!', 'Right!'
+		]
+		@BAD_GUESS_MESSAGES = [
+			'Oops!', 'D-oh!', 'Grrrumble…'
+			'Gah!', 'Bah!', 'No…'
+			'Eep!', 'Meh…', 'Sorry…'
+		]
+		@LOSING_MESSAGES = [
+			'You ran out of guesses!'
+			'Bummer sauce…'
+			'The nail in the coffin.'
+			'Sadness…'
+			'You\'ve been had!'
+		]
+		@CLOSE_CALL_MESSAGES = [
+			'Phew!', 'In the nick of time!'
+			'That was a close call!'
+			'Victory under pressure!'
+			'The grim reaper can wait.'
+			'A brush with death!'
+		]
+		@WINNING_MESSAGES = [
+			'You got it!'
+			'That\'s the one!'
+			'You guessed it!'
+			'Got em all!'
+			'That\'s a wrap!'
+		]
+		@PERFECT_GAME_MESSAGES = [
+			'Flawless victory!'
+			'A perfect game!'
+			'Purrrrrfect.'
+			'Piece of cake!'
+			'You crushed it!'
+			'Nailed it.'
+		]
 
 		tap = if 'ontouchstart' in window then 'touchstart' else 'click'
 
@@ -84,15 +123,38 @@ class HangRabbit
 		@revealLetter location, guess for location in locations
 		if @game.isLost()
 			@revealFace()
-			@updateMessage "You ran out of guesses! The phrase was \"#{@game.getPhrase()}\"."
+			@updateMessage @getLosingMessage()
 			@showPhraseInputForm()
 		else if @game.isWon()
-			@updateMessage "You got it!"
+			isPerfectGame = @game.getAttemptsLeft() == @game.maxAttempts
+			isCloseCall = @game.getAttemptsLeft() == 1
+			if isPerfectGame
+				@updateMessage @getPerfectGameMessage()
+			else if isCloseCall
+				@updateMessage @getCloseCallMessage()
+			else
+				@updateMessage @getWinningMessage()
 			@showPhraseInputForm()
 		else
-			tone = if locations.length > 0 then "Nice!" else "Oops!"
+			tone = if locations.length > 0 then @getGoodGuessMessage() else @getBadGuessMessage()
 			noun = if @game.getAttemptsLeft() > 1 then "guesses" else "guess"
 			@updateMessage "#{tone} You have #{@game.getAttemptsLeft()} #{noun} left..."
+	
+	randomArrayItem: (a) ->
+		a[Math.floor(Math.random() * a.length)]
+
+	getLosingMessage: =>
+		"#{@randomArrayItem @LOSING_MESSAGES} The phrase was \"#{@game.getPhrase()}\"."
+
+	getWinningMessage: => @randomArrayItem @WINNING_MESSAGES
+	
+	getCloseCallMessage: => @randomArrayItem @CLOSE_CALL_MESSAGES
+
+	getPerfectGameMessage: => @randomArrayItem @PERFECT_GAME_MESSAGES
+
+	getGoodGuessMessage: => @randomArrayItem @GOOD_GUESS_MESSAGES
+	
+	getBadGuessMessage: => @randomArrayItem @BAD_GUESS_MESSAGES
 	
 	revealLetter: (index, letterToShow) =>
 		$(".char").eq(index).removeClass("underscore").addClass("guessed").html(letterToShow)
