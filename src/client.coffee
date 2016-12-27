@@ -81,8 +81,7 @@ class HangRabbit
 		locations = @game.guessLetter guess
 		if locations.length == 0
 			@revealBodyPart()
-		for location in locations
-			$(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess)
+		@revealLetter location, guess for location in locations
 		if @game.isLost()
 			@revealFace()
 			@updateMessage "You ran out of guesses! The phrase was \"#{@game.getPhrase()}\"."
@@ -94,6 +93,9 @@ class HangRabbit
 			tone = if locations.length > 0 then "Nice!" else "Oops!"
 			noun = if @game.getAttemptsLeft() > 1 then "guesses" else "guess"
 			@updateMessage "#{tone} You have #{@game.getAttemptsLeft()} #{noun} left..."
+	
+	revealLetter: (index, letterToShow) =>
+		$(".char").eq(index).removeClass("underscore").addClass("guessed").html(letterToShow)
 	
 	revealBodyPart: =>
 		n = @game.maxAttempts - @game.getAttemptsLeft() - 1
