@@ -52,7 +52,7 @@ class HangRabbit
 		@refreshLetterChoices()
 		phrase = phrase.toLowerCase()
 		@game = new Game phrase
-		$(".js-message").html "Select a letter. You have #{@game.getAttemptsLeft()} guesses left."
+		@updateMessage "Select a letter. You have #{@game.getAttemptsLeft()} guesses left."
 		$(".js-phrase-input").blur()
 		$clueArea = $(".js-letter-underlines")
 		$clueArea.empty()
@@ -86,15 +86,18 @@ class HangRabbit
 			$(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess)
 		if @game.isLost()
 			@face.setAttribute "class", "reveal"
-			$(".js-message").html "You ran out of guesses! The phrase was \"#{@game.getPhrase()}\"."
+			@updateMessage "You ran out of guesses! The phrase was \"#{@game.getPhrase()}\"."
 			@showPhraseInputForm()
 		else if @game.isWon()
-			$(".js-message").html "You got it!"
+			@updateMessage "You got it!"
 			@showPhraseInputForm()
 		else
 			tone = if locations.length > 0 then "Nice!" else "Oops!"
 			noun = if @game.getAttemptsLeft() > 1 then "guesses" else "guess"
-			$(".js-message").html "#{tone} You have #{@game.getAttemptsLeft()} #{noun} left..."
+			@updateMessage "#{tone} You have #{@game.getAttemptsLeft()} #{noun} left..."
+
+	updateMessage: (message) =>
+		$(".js-message").html message
 
 	showPhraseInputForm: ->
 		$(".js-phrase-input-form").show()
