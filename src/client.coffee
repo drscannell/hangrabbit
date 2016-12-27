@@ -8,7 +8,7 @@ class HangRabbit
 
 		# events
 		$(".js-phrase-input").on 'keypress',  @handleKeystroke
-		$(".js-letter-choices").on tap, @handleLetterChoice
+		$(".js-letter-choices").on tap, @handleLetterChoiceEvent
 		$(".js-submit").on "click", @submitPhrase
 
 		# svg
@@ -65,7 +65,7 @@ class HangRabbit
 			bodypart.setAttribute "class", "hidden"
 		@face.setAttribute "class", "hidden"
 	
-	handleLetterChoice: ($ev) =>
+	handleLetterChoiceEvent: ($ev) =>
 		shouldHandleLetterChoice = true
 		if @game.isLost() then shouldHandleLetterChoice = false
 		if @game.isWon() then shouldHandleLetterChoice = false
@@ -75,23 +75,26 @@ class HangRabbit
 		if shouldHandleLetterChoice
 			$($ev.target).addClass "disabled"
 			guess = $ev.target.innerHTML
-			locations = @game.guessLetter guess
-			if locations.length == 0
-				n = @game.maxAttempts - @game.getAttemptsLeft() - 1
-				@bodyparts[n].setAttribute "class", "reveal"
-			for location in locations
-				$(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess)
-			if @game.isLost()
-				@face.setAttribute "class", "reveal"
-				$(".js-message").html "You ran out of guesses! The phrase was \"#{@game.getPhrase()}\"."
-				@showPhraseInputForm()
-			else if @game.isWon()
-				$(".js-message").html "You got it!"
-				@showPhraseInputForm()
-			else
-				tone = if locations.length > 0 then "Nice!" else "Oops!"
-				noun = if @game.getAttemptsLeft() > 1 then "guesses" else "guess"
-				$(".js-message").html "#{tone} You have #{@game.getAttemptsLeft()} #{noun} left..."
+			@handleGuess guess
+
+	handleGuess: (guess) =>
+		locations = @game.guessLetter guess
+		if locations.length == 0
+			n = @game.maxAttempts - @game.getAttemptsLeft() - 1
+			@bodyparts[n].setAttribute "class", "reveal"
+		for location in locations
+			$(".char").eq(location).removeClass("underscore").addClass("guessed").html(guess)
+		if @game.isLost()
+			@face.setAttribute "class", "reveal"
+			$(".js-message").html "You ran out of guesses! The phrase was \"#{@game.getPhrase()}\"."
+			@showPhraseInputForm()
+		else if @game.isWon()
+			$(".js-message").html "You got it!"
+			@showPhraseInputForm()
+		else
+			tone = if locations.length > 0 then "Nice!" else "Oops!"
+			noun = if @game.getAttemptsLeft() > 1 then "guesses" else "guess"
+			$(".js-message").html "#{tone} You have #{@game.getAttemptsLeft()} #{noun} left..."
 
 	showPhraseInputForm: ->
 		$(".js-phrase-input-form").show()
